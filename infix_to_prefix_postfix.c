@@ -4,28 +4,28 @@
 #include <string.h>
 
 /*****
-			Grammar use to solve this
-			Expr 		-> Term* ([+ | -] Term)*
-			Term 		-> Factor* ([* | /] Factor)*
-			Factor 	-> Factor* (^ Factor)*
-			Factor 	-> (Expr)
-			Factor 	-> \d+
+	Grammar use to solve this
+	Expr 		-> Term* ([+ | -] Term)*
+	Term 		-> Factor* ([* | /] Factor)*
+	Factor 	-> Factor* (^ Factor)*
+	Factor 	-> (Expr)
+	Factor 	-> \d+
 *****/
 
 
 /* This is a valid definition for this struct
 struct ExpressionPart{
-  char* tPart;
-  struct ExpressionPart* next;
-  struct ExpressionPart* prev;
+	char* tPart;
+	struct ExpressionPart* next;
+	struct ExpressionPart* prev;
 };
 typedef struct ExpressionPart ExpressionPart;
 */
 
 typedef struct ExpressionPart{
-  char* tPart;
-  struct ExpressionPart* next;
-  struct ExpressionPart* prev;
+	char* tPart;
+	struct ExpressionPart* next;
+	struct ExpressionPart* prev;
 } ExpressionPart;
 
 //Definition of functions
@@ -51,7 +51,7 @@ void printStack(ExpressionPart*);
 
 int main (){
 	//////************Hard expression ************//////////////
- 	//char *expr = "(3*(5+2)+5*3)/(3+4)*2+5*7*(2+4)";
+	//char *expr = "(3*(5+2)+5*3)/(3+4)*2+5*7*(2+4)";
 	//////****************************************//////////////
 
 	//////************Hard expression ************//////////////
@@ -63,98 +63,98 @@ int main (){
 	//const char* expr = "4*3/2 + 5*(3-1) ^ (2*1 + 3 - 2*1 + 2) ^ 2";
 	//const char* expr = "4^3^2";
 	//const char* expr = "(4.5*4 - 16) ^ 3 ^ (4 - 1) - 5.11 * 100";
-  int reader = 0;
-  double value = 0;
-  ExpressionPart* expressionPrefix;
-  //bool isPrefix = false;
+	int reader = 0;
+	double value = 0;
+	ExpressionPart* expressionPrefix;
+	//bool isPrefix = false;
 	printf("Expresion original: %s\n", expr);
-  expressionPrefix = analyzeExpression(expr, &reader, &value, true);
-  //printf("Expresion %s: ", isPrefix ? "prefija" : "postfija");
-  printf("Expresion prefija: \n");
-  printStack(expressionPrefix);
+	expressionPrefix = analyzeExpression(expr, &reader, &value, true);
+	//printf("Expresion %s: ", isPrefix ? "prefija" : "postfija");
+	printf("Expresion prefija: \n");
+	printStack(expressionPrefix);
 
-  ExpressionPart* expressionPostfix;
-  reader = 0;
-  value = 0;
- 	expressionPostfix = analyzeExpression(expr, &reader, &value, false);
-  //printf("Expresion %s: ", isPrefix ? "prefija" : "postfija");
-  printf("Expresion postfija: \n");
-  printStack(expressionPostfix);
+	ExpressionPart* expressionPostfix;
+	reader = 0;
+	value = 0;
+	expressionPostfix = analyzeExpression(expr, &reader, &value, false);
+	//printf("Expresion %s: ", isPrefix ? "prefija" : "postfija");
+	printf("Expresion postfija: \n");
+	printStack(expressionPostfix);
 
-  printf("\nValor de la expresion: %.2f\n", value);
+	printf("\nValor de la expresion: %.2f\n", value);
 
-  return 0;
+	return 0;
 }
 
 
 ExpressionPart *pushItem(ExpressionPart *stack, char* tPart){
-  ExpressionPart *newItem;
-  ExpressionPart *aux;
-  newItem = (ExpressionPart*) malloc(sizeof(ExpressionPart));
-  newItem->tPart = tPart;
-  newItem->next = NULL;
-  newItem->prev = NULL;
-  if(stack  ==  NULL){
-    stack = newItem;
-  }
-  else{
-    aux = stack;
-    newItem->next = aux;
-    aux->prev = newItem;
-    stack = newItem;
-  }
-  return stack;  
+	ExpressionPart *newItem;
+	ExpressionPart *aux;
+	newItem = (ExpressionPart*) malloc(sizeof(ExpressionPart));
+	newItem->tPart = tPart;
+	newItem->next = NULL;
+	newItem->prev = NULL;
+	if(stack  ==  NULL){
+		stack = newItem;
+	}
+	else{
+		aux = stack;
+		newItem->next = aux;
+		aux->prev = newItem;
+		stack = newItem;
+	}
+	return stack;  
 }
 
 ExpressionPart *addItem(ExpressionPart *stack, char* tPart){
-  ExpressionPart *newItem;
-  ExpressionPart *aux;
-  newItem = (ExpressionPart*) malloc(sizeof(ExpressionPart));
-  newItem->tPart = tPart;
-  newItem->next = NULL;
-  newItem->prev = NULL;
-  if(stack == NULL){
-    stack = newItem;
-  }
-  else{
-    aux = stack;
-    while (aux->next != NULL){
-      aux = aux->next;
-    }
-    aux->next = newItem;
-    newItem->prev = aux;
-  }
-  return stack;  
+	ExpressionPart *newItem;
+	ExpressionPart *aux;
+	newItem = (ExpressionPart*) malloc(sizeof(ExpressionPart));
+	newItem->tPart = tPart;
+	newItem->next = NULL;
+	newItem->prev = NULL;
+	if(stack == NULL){
+		stack = newItem;
+	}
+	else{
+		aux = stack;
+		while (aux->next != NULL){
+			aux = aux->next;
+		}
+		aux->next = newItem;
+		newItem->prev = aux;
+	}
+	return stack;  
 }
 
 ExpressionPart *pushStack(ExpressionPart *stack, ExpressionPart* otherStack){
-  ExpressionPart* aux;
-  if(stack  ==  NULL) {
-    stack = otherStack;
-  }
-  else {
-    aux = stack;
-    otherStack->next = aux;
-    aux->prev = otherStack;
-    stack = otherStack;
-  }
-  return stack;  
+	ExpressionPart* aux;
+	if(stack  ==  NULL) {
+		stack = otherStack;
+	}
+	else {
+		aux = stack;
+		otherStack->next = aux;
+		aux->prev = otherStack;
+		stack = otherStack;
+	}
+	return stack;  
 }
 
 ExpressionPart *addStack(ExpressionPart *stack,ExpressionPart *otherStack){
-  ExpressionPart *aux;
-  if(stack == NULL){
-    stack = otherStack;
-  }
-  else{
-    aux = stack;
-    while (aux->next != NULL){
-      aux = aux->next;
-    }
-    aux->next = otherStack;
-    otherStack->prev = aux;
-  }
-  return stack;  
+	ExpressionPart *aux;
+	if(stack == NULL){
+		stack = otherStack;
+	}
+	else{
+		aux = stack;
+		while (aux->next != NULL){
+			aux = aux->next;
+		}
+		aux->next = otherStack;
+		otherStack->prev = aux;
+	}
+	return stack;  
 }
 
 ExpressionPart *analyzeFactor(const char* expr, int* reader, double* value, bool isPrefix){
@@ -444,21 +444,21 @@ ExpressionPart *analyzeExpression(const char* expr, int* reader, double* value, 
 }
 
 double operations(char sign, double a, double b){
-  switch (sign){
-    case '+':
-      return a + b;
-    case '-':
-      return a - b;
-    case '*':
-      return a * b;
-    case '/':
-      return a / b;
-    case 'x':
-      return a * b;
-    case '^':
-    return exponential(a, b);
-  }
-  return 0;
+	switch (sign){
+		case '+':
+			return a + b;
+		case '-':
+			return a - b;
+		case '*':
+			return a * b;
+		case '/':
+			return a / b;
+		case 'x':
+			return a * b;
+		case '^':
+		return exponential(a, b);
+	}
+	return 0;
 }
 
 double exponential(double base, double exp){
